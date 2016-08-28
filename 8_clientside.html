@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<div id="changeMe">Hello world!</div>
+
+<script>
+
+// Insert Javascript here
+
+var changeMeDiv = document.getElementById("changeMe");
+changeMeDiv.innerHTML = "Congrats! Your code works!";
+
+var webSocket = new WebSocket("ws://192.168.1.88:11101");
+
+function sendMessage(){
+	var usernameTextField = document.getElementById("usernameText");
+	var messageTextField = document.getElementById("messageText");
+	var usernameValue = usernameTextField.value;
+	var msgText = messageTextField.value;
+	
+	var message {
+			username: usernameValue,
+			message: msgText
+	};
+	
+	var msgString = JSON.stringify(message);
+	webSocket.send(msgString);
+	
+	return false;
+
+}
+
+function receiveMessage(message){
+	var message = JSON.parse(message.data);
+	
+	var table = document.getElementById("chatTable");
+	var newRow = table.insertRow(-1);
+	var newUnameCell = newRow.insertCell(0);
+	var newMsgCell = newRow.insertCell(1);
+	
+	newUnameCell.innerHTML = message.username;
+	newMsgCell.innerHTML = message.message;
+}
+
+webSocket.onmessage = receiveMessage;
+
+</script>
+
+<form onsubmit=" return sendMessage();">
+	<input type="text" id="usernameText" value="">
+	<input type="text" id="messageText" value="">
+	<input type="submit" id="submitButton" value="Submit">
+	
+</form>
+
+</body>
+
+<table id="chatTable">
+</table>
