@@ -10,7 +10,7 @@
 
 
 //store module express in express var
-var express = require('express);  
+var express = require('express');  
 
 //instantiate express in a function in variable app
 var app = express();
